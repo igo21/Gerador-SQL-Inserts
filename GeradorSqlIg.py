@@ -3,7 +3,8 @@ import csv #para fazer leitura do arq csv
 import clipboard #para efetuar copias do cmd
 class Aplicacao:
     def __init__(self, master=None):
-        self.contemail=0
+        self.contemail=3
+        self.id=40
         self.telamaster = master
         self.fontePadrao = ("Arial", "10", 'bold')
         self.primeiroContainer = Frame(master)
@@ -101,17 +102,95 @@ class Aplicacao:
     
        
     def geraSql(self,texto,cabecalho):
-        mae=''
+        completo=texto[0].split(" ") #nome completo
+        primeiro=completo[0]
+        ultimo=completo[-1]
+
+        sql1=''
         nometb=str(self.campo.get())
+        nometb=nometb.split(';')
+        nometbUser=nometb[0]
+        nomeMetaUser=nometb[1]
+        numCapabilitie=nometb[2]
         sete = ''
-        if texto[3].replace(" ","")=="":
-            sete = "\ninsert into "+nometb+" ("+cabecalho[0]+","+cabecalho[1]+","+cabecalho[2]+","+cabecalho[3]+") values ("+texto[0]+","+texto[1]+","+texto[2]+",example"+str(self.contemail)+"@mail.com);"
+        if texto[2].replace(" ","")=="": #todo-mudar
+            #sete = "\ninsert into "+nometb+" ("+cabecalho[0]+","+cabecalho[1]+","+cabecalho[2]+","+cabecalho[3]+") values ("+texto[0]+","+texto[1]+","+texto[2]+",example"+str(self.contemail)+"@mail.com);"
+            sete = "\ninsert into "+nometbUser+" (id,user_login,user_pass,user_nicename,user_email,user_url,user_registered,user_activation_key,user_status,display_name) " \
+                                           "values ("+str(self.id)+",'"+texto[1]+"',md5('"+str(texto[1])+"'),'"+texto[0]+"','example"+str(self.contemail)+"@mail.com','','','','0','"+texto[0]+"'"+");"
             self.contemail=self.contemail+1
         else:
-            sete = "\ninsert into "+nometb+" ("+cabecalho[0]+","+cabecalho[1]+","+cabecalho[2]+","+cabecalho[3]+") values ("+texto[0]+","+texto[1]+","+texto[2]+","+texto[3]+");"
-        mae=mae+sete
-        self.text2.insert(END,mae)    
-        
+            sete = "\ninsert into " + nometbUser + " (id,user_login,user_pass,user_nicename,user_email,user_url,user_registered,user_activation_key,user_status,display_name) " \
+                                               "values (" + str(self.id) + ",'" + texto[1] + "',md5('" + str(texto[1]) + "'),'" + texto[0] + "','" + texto[2]+"','','','','0','" +texto[0] + "'" + ");"
+        sql1=sql1+sete
+        self.text2.insert(END,sql1)
+
+        nickname = primeiro
+        first_name = primeiro
+        last_name = ultimo
+        description = ""
+        rich_editing = "true"
+        syntax_highlighting = "true"
+        comment_shortcuts = "false"
+        admin_color = "fresh"
+        use_ssl = "0"
+        show_admin_bar_front = "true"
+        locale = ""
+        wpintr_capabilities = 'a:1:{s:'+str(numCapabilitie)+':"colaborador";b;1;}'
+        # 11 é id da rule capabilitie colaborador, em cada PC esse numero poderá mudar.
+        wpintr_user_level = "0"
+        dismissed_wp_pointers = ""
+
+        #inserts nas outras tabelas
+        sql2="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','nickname','"+nickname+"')"
+        sql3="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','first_name','"+first_name+"')"
+        sql4="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','last_name','"+last_name+"')"
+        sql5="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','description','"+description+"')"
+        sql6="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','rich_editing','"+rich_editing+"')"
+        sql7="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','syntax_highlighting','"+syntax_highlighting+"')"
+        sql8="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','comment_shortcuts','"+comment_shortcuts+"')"
+        sql9="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','admin_color','"+admin_color+"')"
+        sql10="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','use_ssl','"+use_ssl+"')"
+        sql11="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','show_admin_bar_front','"+show_admin_bar_front+"')"
+        sql12="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','locale','"+locale+"')"
+        sql13="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','wpintr_capabilities','"+wpintr_capabilities+"')"
+        sql14="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','wpintr_user_level','"+wpintr_user_level+"')"
+        sql15="\ninsert into "+nomeMetaUser+" (user_id,meta_key,meta_value) values('"+str(self.id)+"','dismissed_wp_pointers','"+dismissed_wp_pointers+"')"
+
+        self.text2.insert(END, sql2)
+        self.text2.insert(END, sql3)
+        self.text2.insert(END, sql4)
+        self.text2.insert(END, sql5)
+        self.text2.insert(END, sql6)
+        self.text2.insert(END, sql7)
+        self.text2.insert(END, sql8)
+        self.text2.insert(END, sql9)
+        self.text2.insert(END, sql10)
+        self.text2.insert(END, sql11)
+        self.text2.insert(END, sql12)
+        self.text2.insert(END, sql13)
+        self.text2.insert(END, sql14)
+        self.text2.insert(END, sql15)
+
+        self.id = self.id + 1  #resetando variavel de ID
+
+
+    """
+        nickname = 02339140052 
+        first_name = estagiario 
+        last_name = estagiario sobrenome 
+        description = "em branco/null"
+        rich_editing = true
+        syntax_highlighting = true
+        comment_shortcuts = false
+        admin_color = fresh
+        use_ssl = 0 
+        show_admin_bar_front = true
+        locale = "em branco/null"
+        wpintr_capabilities = a:1:{s:11:"colaborador";b;1;}
+        wpintr_user_level = 0
+        dismissed_wp_pointers = "em branco/null"
+
+    """
     def apagaTexto(self):
         self.contemail=0
         self.text2.delete(1.0, END)
