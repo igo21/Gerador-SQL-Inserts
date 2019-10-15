@@ -1,5 +1,5 @@
 from tkinter import *
-import csv
+import csv #para fazer leitura do arq csv
 import clipboard #para efetuar copias do cmd
 class Aplicacao:
     def __init__(self, master=None):
@@ -11,7 +11,6 @@ class Aplicacao:
         self.primeiroContainer.pack(side=LEFT)
 
         # campo tabela bd
-
         self.campo = Entry(self.primeiroContainer)
         self.campo['width'] = 15
         self.campo['font'] = "Arial", "15"
@@ -19,9 +18,7 @@ class Aplicacao:
         self.campo['bg'] = 'white'
         self.campo.insert(0,"nomeTB")
         self.campo.pack(side=TOP)
-        
         #fim campo tabelabd
-        
         
         # botão gerar
 
@@ -85,8 +82,6 @@ class Aplicacao:
         linhas = csv.reader(arquivo)
         cabecalho=[]
         texto=[]
-        #cabecalho=linhas[0]
-        #print(cabecalho)
         c=0
         for linha in linhas:
             #print(linha)
@@ -106,9 +101,6 @@ class Aplicacao:
     
        
     def geraSql(self,texto,cabecalho):
-        #fazer funcção aqui
-        #cabecalho=[]
-        #cabecalho=cabecalho
         mae=''
         nometb=str(self.campo.get())
         sete = ''
@@ -147,12 +139,4 @@ root['bg']='#545454'
 centralizar(root)
 Aplicacao(root)
 root.mainloop()
-#aqui é  fim do código
-#fim :)
 
-#arquivo pessoas.csv
-#nome;idade;email
-#Gustavo;28;gustavo@dicasdeprogramcao.com.br
-#Joao;35;joao@dicasdepython.com.br
-#Maria;23;maria@dicasdeprogramacao.com.br
-#Ana;25;ana@dicasdepython.com.br
